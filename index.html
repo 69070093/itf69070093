@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FOODPICKER ITF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <span>69070093</span>
+  <span class="brand">FOODPICKER ITF</span>
+  <span>Week15</span>
+</header>
+
+<main>
+  <div class="head">
+    <h1>วันนี้กินอะไรดี</h1>
+    <p class="sub">กดปุ่มสุ่ม แล้วให้เมนูเลือกคุณ</p>
+  </div>
+
+
+  <section class="stage" id="stage" aria-live="polite">
+    <img id="pic" alt="">
+    <div class="info">
+      <span class="tag" id="tag"></span>
+      <h2 class="name" id="name"></h2>
+      <p class="desc" id="desc"></p>
+      <div class="price" id="price"></div>
+      <button class="btn" id="btn" type="button">สุ่มเมนูอาหาร</button>
+    </div>
+  </section>
+</main>
+
+<script>
+var PHOTOS = {
+  "ข้าวมันไก่": "image1.jpg",
+  "ผัดกะเพราไข่ดาว": "image2.jpg",
+  "ส้มตำไก่ย่าง": "image3.jpg",
+  "ผัดไทยกุ้งสด": "image4.jpg",
+  "ก๋วยเตี๋ยวแห้งลูกชิ้น": "image5.jpg"
+};
+
+
+var FOODS = [
+  {n:"ข้าวมันไก่", d:"ไก่ต้มนุ่มฉ่ำ ข้าวมันหอมกลิ่นขิง เสิร์ฟพร้อมน้ำจิ้มรสเด็ดและซุปร้อนๆ", p:"50-65", t:"จานเดียว", e:"🍗"},
+  {n:"ผัดกะเพราไข่ดาว", d:"เผ็ดจัดจ้าน หอมใบกะเพรา ไข่ดาวไข่แดงเยิ้มกรอบขอบ", p:"50-70", t:"จานเดียว", e:"🍳"},
+  {n:"ส้มตำไก่ย่าง", d:"ส้มตำรสแซ่บ คู่ไก่ย่างหนังกรอบ ข้าวเหนียวร้อนๆ", p:"60-90", t:"อาหารอีสาน", e:"🥗"},
+  {n:"ผัดไทยกุ้งสด", d:"เส้นจันท์เหนียวนุ่ม ห่อไข่ กุ้งสด รสเปรี้ยวหวานกลมกล่อม โรยถั่วป่น", p:"60-80", t:"ผัด", e:"🍤"},
+  {n:"ก๋วยเตี๋ยวแห้งลูกชิ้น", d:"เส้นเหนียวนุ่มคลุกเครื่องปรุง ลูกชิ้นเด้ง ใส่พริกป่นและโหระพา", p:"45-60", t:"เส้น", e:"🍜"}
+];
+
+function img(f) {
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2E7D5"/><stop offset="1" stop-color="#D1B89A"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><circle cx="200" cy="150" r="110" fill="#fff" opacity=".6"/><text x="200" y="195" font-size="120" text-anchor="middle">' + f.e + '</text></svg>';
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
+}
+
+var cur = -1;
+var stage = document.getElementById("stage");
+
+function show(i) {
+  var f = FOODS[i], p = document.getElementById("pic");
+  p.onerror = function () { p.onerror = null; p.src = img(f); };
+  p.src = PHOTOS[f.n] || img(f);
+  p.alt = f.n;
+  document.getElementById("tag").textContent = f.t;
+  document.getElementById("name").textContent = f.n;
+  document.getElementById("desc").textContent = f.d;
+  document.getElementById("price").textContent = "ราคา " + f.p + " บาท";
+  stage.classList.remove("fade"); void stage.offsetWidth; stage.classList.add("fade");
+}
+
+function pick() {
+  var i;
+  do { i = Math.floor(Math.random() * FOODS.length); } while (i === cur);
+  cur = i;
+  show(i);
+}
+
+document.getElementById("btn").addEventListener("click", pick);
+pick();
+</script>
+</body>
+</html>
